@@ -6,19 +6,15 @@ const int DO = 9;
 const int CLK = 10;
 const int DI = 11;
 
-int delay = 250
+int delay_clock = 250;
 
 int ending_delay = 10;
 
 void setup() {
   pinMode(CS, OUTPUT);
-  delayMicroseconds(delay);
   pinMode(DO, INPUT);
-  delayMicroseconds(delay);
   pinMode(CLK, OUTPUT);
-  delayMicroseconds(delay);
   pinMode(DI, OUTPUT);
-  delayMicroseconds(delay);
 
   digitalWrite(CS, HIGH);
 }
@@ -36,16 +32,20 @@ void loop() {
   delay(ending_delay);
 }
 
-void clock {
+void clock() {
   digitalWrite(CLK, HIGH);
+  delayMicroseconds(delay_clock);
   digitalWrite(CLK, LOW);
+  delayMicroseconds(delay_clock);
   digitalWrite(CLK, HIGH);
+  delayMicroseconds(delay_clock);
   digitalWrite(CLK, LOW);
+  delayMicroseconds(delay_clock);
 }
 
-void send_command(data) {
-  for (int i = 7, i >= 0; i --) {
-    digitalWrite(DI, (data >> i), 0x01);
+void send_command(byte data) {
+  for (int i = 7; i >= 0; i --) {
+    digitalWrite(DI, (data >> i) & 0x01);
     clock();
   }
 }
