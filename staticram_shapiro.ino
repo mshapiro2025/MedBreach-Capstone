@@ -50,8 +50,8 @@ void loop() {
   digitalWrite(WE, HIGH);
   digitalWrite(BLE, LOW);
 
-for (int i = ?; i <= ?; i ++) {
-  send_address(0x??);
+for (int i = 0; i <= 1; i ++) {
+  send_address(0x01);
 }
 
   digitalWrite(CE, HIGH);
