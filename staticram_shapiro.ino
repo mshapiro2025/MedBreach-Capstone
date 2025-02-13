@@ -2,30 +2,24 @@
 // Written by Molly Shapiro for MedBreach Capstone
 
 // Reading from CMOS chip: 
-// Set Chip Enable (CE) and Output Enable (OE) LOW and Write Enable (WE) HIGH, then Byte Low Enable (BLE) LOW
-// to read data from memory locations specified on Address (A) pins from IO0 - IO7
+// Set Chip Enable (CE) and Write Enable (WE) HIGH, then Byte Low Enable (BLE) LOW
+// to read data from memory locations specified on Address (A) pins from IO0
 
 // Identify constant pins that will be set either high or low
-const int BLE = 7;
-const int CE = 8;
-//const int OE = 9; 
-const int WE = 10;
+const int BLE = 53;
+const int CE = 47; 
+const int WE = 43;
 
 // Identify address pins
-const int A = 12;
+const int A = 49;
 
 // Identify I/O pins
-const int IO0 = 20;
-
-// Define time delays
-//int delay_clock = 250;
-//int ending_delay = 10;
+const int IO0 = 45;
 
 // Set pins as input or output and set constant pins to non-write levels
 void setup() {
   // set constant pins
   pinMode(CE, OUTPUT);
-//  pinMode(OE, OUTPUT);
   pinMode(WE, OUTPUT);
   pinMode(BLE, OUTPUT);
 
@@ -37,7 +31,6 @@ void setup() {
 
   // Set constant pins to pre-read
   digitalWrite(CE, HIGH);
-//  digitalWrite(OE, HIGH);
   digitalWrite(WE, LOW);
   digitalWrite(BLE, HIGH);
 }
@@ -45,24 +38,20 @@ void setup() {
 void loop() {
   // Set constant pins to read state
   digitalWrite(CE, LOW);
-//  digitalWrite(OE, LOW);
   digitalWrite(WE, HIGH);
   digitalWrite(BLE, LOW);
 
-for (int i = 0; i <= 1; i ++) {
-  send_address(0x01);
+for (int i = 0x00; i <= 0x10000000000; i ++) {
+  send_address(i);
 }
-
+  digitalRead(IO0);
   digitalWrite(CE, HIGH);
- // digitalWrite(OE, HIGH);
   digitalWrite(WE, LOW);
-
-  delay(ending_delay);
+  digitalWrite(BLE, HIGH);
 }
 
-void send_address(byte address) {
-  for (int i = 0; i >= 7; i ++) {
-    digitalWrite(A, (address >> i) & 0x01);
-    clock();
+void send_address(byte data) {
+  for (int i = 7; i >= 0; i --) {
+    digitalWrite(A, (data >> i) & 0x01);
   }
 }
