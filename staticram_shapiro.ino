@@ -8,37 +8,36 @@
 // Identify constant pins that will be set either high or low
 const int BLE = 7;
 const int CE = 8;
-const int OE = 9; 
-const int CLK = 10;
-const int WE = 11;
+//const int OE = 9; 
+const int WE = 10;
 
 // Identify address pins
-const int A0 = 12;
+const int A = 12;
 
 // Identify I/O pins
 const int IO0 = 20;
 
 // Define time delays
-int delay_clock = 250;
-int ending_delay = 10;
+//int delay_clock = 250;
+//int ending_delay = 10;
 
 // Set pins as input or output and set constant pins to non-write levels
 void setup() {
   // set constant pins
   pinMode(CE, OUTPUT);
-  pinMode(OE, OUTPUT);
-  pinMode(CLK, OUTPUT);
+//  pinMode(OE, OUTPUT);
   pinMode(WE, OUTPUT);
+  pinMode(BLE, OUTPUT);
 
   // Set address pins
-  pinMode(A0, OUTPUT);
+  pinMode(A, OUTPUT);
 
   // Set IO pins
   pinMode(IO0, INPUT);
 
   // Set constant pins to pre-read
   digitalWrite(CE, HIGH);
-  digitalWrite(OE, HIGH);
+//  digitalWrite(OE, HIGH);
   digitalWrite(WE, LOW);
   digitalWrite(BLE, HIGH);
 }
@@ -46,7 +45,7 @@ void setup() {
 void loop() {
   // Set constant pins to read state
   digitalWrite(CE, LOW);
-  digitalWrite(OE, LOW);
+//  digitalWrite(OE, LOW);
   digitalWrite(WE, HIGH);
   digitalWrite(BLE, LOW);
 
@@ -55,27 +54,15 @@ for (int i = 0; i <= 1; i ++) {
 }
 
   digitalWrite(CE, HIGH);
-  digitalWrite(OE, HIGH);
+ // digitalWrite(OE, HIGH);
   digitalWrite(WE, LOW);
 
   delay(ending_delay);
 }
 
-// Clock function
-void clock() {
-  digitalWrite(CLK, HIGH);
-  delayMicroseconds(delay_clock);
-  digitalWrite(CLK, LOW);
-  delayMicroseconds(delay_clock);
-  digitalWrite(CLK, HIGH);
-  delayMicroseconds(delay_clock);
-  digitalWrite(CLK, LOW);
-  delayMicroseconds(delay_clock);
-}
-
 void send_address(byte address) {
   for (int i = 0; i >= 7; i ++) {
-    digitalWrite(A0, (address >> i) & 0x01);
+    digitalWrite(A, (address >> i) & 0x01);
     clock();
   }
 }
